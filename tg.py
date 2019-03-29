@@ -1,6 +1,7 @@
 import os
 import requests
 import random
+import json
 
 import csv
 DATA = []
@@ -30,19 +31,19 @@ class Task:
         )
         return req.text
 
-    def send_location(self, lat, lng):
+    def send_location(self, lat, lng, rid):
         req = requests.post(
             'https://api.telegram.org/bot{token}/sendLocation'.format(token = API_TOKEN), 
-            json={"chat_id": self.chat_id, "latitude": lat, "longitude": lng}
+            json={"chat_id": self.chat_id, "latitude": lat, "longitude": lng, "reply_to_message_id": rid}
         )
         return req.text
 
     def start(self):
-        self.send_message("Trabot is simple bot for users to get travel choices based on whatever is on his/her mind or mood. You can choose between the moods " + str(MOODS) + ".")
-        self.send_message("You can choose between the following commands for now: ['/recommend', '/city', '/start']")
+        self.send_message("Trabot is simple bot for users to get travel choices based on whatever is on his/her mind or mood. You can choose between these moods: " + ', '.join(MOODS) + " for now.")
+        self.send_message("You can choose between the following commands for now: " + ", ".join(['/recommend_' + mood for mood in MOODS] + ['/start', '/city']))
 
     def recommend(self, mood):
-        self.send_message('We will help you get started with your upcoming trip!')
+        self.send_message('We will help you get started with your upcoming trip! You selected your mood as: ' + mood)
         r_index = int(random.random() * LIMIT)
         if mood == 'Exploring':
             r_index = 0 + r_index
@@ -55,8 +56,11 @@ class Task:
         name = DATA[r_index]['Name']
         latitude = DATA[r_index]['Latitude']
         longitude = DATA[r_index]['Longitude']
-        self.send_message(name)
-        self.send_location(latitude, longitude)
+
+        msg1 = json.loads(self.send_message(name))
+        msg1_id = msg1['result']['message_id']
+
+        self.send_location(latitude, longitude, msg1_id)
 
     def city(self):
         self.send_message("Once you plan your next city to travel, we'll assist you what will attract you there. :) ")
