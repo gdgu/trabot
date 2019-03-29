@@ -13,8 +13,7 @@ API_TOKEN = os.environ['TG_API_TOKEN']
 MOODS = [
     'tired', 'party', 'exploring', 'holy'
 ]
-TABLE = pd.read_csv('./moods.csv')
-LIMIT = 3
+LIMIT = 6
 
 class Task:
     chat_id = None
@@ -33,7 +32,7 @@ class Task:
 
     def send_location(self, lat, lng):
         req = requests.post(
-            'https://api.telegram.org/bot{token}/sendMessage'.format(token = API_TOKEN), 
+            'https://api.telegram.org/bot{token}/sendLocation'.format(token = API_TOKEN), 
             json={"chat_id": self.chat_id, "latitude": lat, "longitude": lng}
         )
         return req.text
@@ -48,14 +47,14 @@ class Task:
         if mood == 'Exploring':
             r_index = 0 + r_index
         elif mood == 'Party':
-            r_index = 3 + r_index
-        elif mood == 'Tired':
             r_index = 6 + r_index
+        elif mood == 'Tired':
+            r_index = 12 + r_index
         elif mood == 'Holy':
-            r_index = 9 + r_index
+            r_index = 18 + r_index
         name = DATA[r_index]['Name']
         latitude = DATA[r_index]['Latitude']
-        longitude = DATA[r_index]['Latitude']
+        longitude = DATA[r_index]['Longitude']
         self.send_message(name)
         self.send_location(latitude, longitude)
 
