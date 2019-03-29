@@ -23,20 +23,23 @@ class Task:
 
     def start(self):
         self.send_message("Trabot is simple bot for users to get travel choices based on whatever is on his/her mind or mood. You can choose between the moods " + str(MOODS) + ".")
+        self.send_message("You can choose between the following commands for now: ['/recommend', '/city', '/start']")
 
     def recommend(self):
+        self.send_message('We will help you get started with your upcoming trip!')
         req = requests.post(
             'https://api.telegram.org/bot{token}/sendMessage'.format(token = API_TOKEN), 
-            json={"chat_id": self.chat_id, "text": "Thanks for sharing :~", "reply_markup": {"one_time_keyboard": true,
-            "keyboard": [[mood] for mood in MOODS]}}
+            json={"chat_id": self.chat_id, "text": "Thanks for sharing :~", "reply_markup": {
+            "inline_keyboard": [{"text": mood} for mood in MOODS]}}
         )
         return req.text
 
     def city(self):
-        self.send_message("Coming soon.")
+        self.send_message("Once you plan your next city to travel, we'll assist you what will attract you there. :) ")
+        self.send_message("This feature is in beta stage and will be available soon.")
 
     def do(self):
-        if self.text.starswith('/start'):
+        if self.text.startswith('/start'):
             self.start()
         elif self.text.startswith('/recommend'):
             self.recommend()
