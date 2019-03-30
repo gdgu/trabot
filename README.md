@@ -4,7 +4,7 @@ Trabot is a simple Telegram bot to recommend places around you based on your moo
 
 [![Telegram Chat](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/trabotbot)  `@trabotbot`
 
-It was originally built at DPGITM Hackathon (HACKDPGITM'19) and a presentation was delivered, slides from which have been put beneath.
+It was originally built at DPGITM Hackathon ([HACKDPGITM'19](https://hackdpg.hackerearth.com)) and a presentation was delivered, slides from which have been put beneath.
 
 ![Slide 1](././slides/slides.001.png)
 
